@@ -22,7 +22,7 @@ import datetime
 import codecs
 
 import pycurl
-import vobject
+#import vobject
 
 """from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.lib.styles import ParagraphStyle
@@ -163,37 +163,17 @@ def generateTimetable(format, date, programId, year, branchId):
     if timetable != False:
         (startDate, endDate, data) = parse.parseHtml(timetable)
 
-    if format == 'txt':
-        fileName = generateTxt(startDate, endDate, data)
+    #if format == 'txt':
+    #    fileName = generateTxt(startDate, endDate, data)
     #elif format == 'pdf':
     #    fileName = generatePdf(startDate, endDate, data)
-    elif format == 'ical':
-        fileName = generateIcal(startDate, endDate, data)
-    elif format == 'json':
-        return generateJson(startDate, endDate, data)
-            
-    return fileName
-
-def generateJson(startDate, endDate, data):
-    r_data = []
-
-    for key in data:
-            
-        if len(data[key]) > 0:
-            for lecture in data[key]:
-                r_data.append({
-                    'dan':  key,
-                    'predmet': lecture[0],
-                    'profesor': lecture[1],
-                    'prostor': lecture[2],
-                    'od': hours[lecture[3]],
-                    'do': hours[lecture[4]]
-                })
-
-    print r_data
+    #elif format == 'ical':
+    #    fileName = generateIcal(startDate, endDate, data)
+    if format == 'json':
+        return data
 
 
-def generateTxt(startDate, endDate, data):
+"""def generateTxt(startDate, endDate, data):
     fileName = 'timetable_%s-%s.txt' % (startDate, endDate)
     
     with open(fileName, 'w') as file:
@@ -206,7 +186,7 @@ def generateTxt(startDate, endDate, data):
                 
                 file.write(line)
                 
-    return fileName
+    return fileName"""
 
 """def generatePdf(startDate, endDate, data):
     fileName = 'timetable_%s-%s.pdf' % (startDate, endDate)
@@ -262,7 +242,7 @@ def generateTxt(startDate, endDate, data):
     
     return fileName"""
     
-def generateIcal(startDate, endDate, data):
+"""def generateIcal(startDate, endDate, data):
     fileName = 'timetable_%s-%s.ics' % (startDate, endDate)
     startDate = datetime.date(int(startDate[6:]), int(startDate[3:5]), int(startDate[:2]))
       
@@ -285,7 +265,7 @@ def generateIcal(startDate, endDate, data):
     with codecs.open(fileName, 'w', 'ascii') as file:
         file.write(icalstream)
                 
-    return fileName
+    return fileName"""
 
 if __name__ == '__main__':
     argLen = len(sys.argv)
