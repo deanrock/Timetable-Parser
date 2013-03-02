@@ -24,14 +24,14 @@ import codecs
 import pycurl
 import vobject
 
-from reportlab.lib.styles import getSampleStyleSheet
+"""from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.lib.styles import ParagraphStyle
 from reportlab.platypus import *
 from reportlab.lib import colors
 from reportlab.pdfbase import pdfmetrics
 from reportlab.lib import pagesizes
 from reportlab.pdfbase.ttfonts import TTFont
-from reportlab.lib.units import cm
+from reportlab.lib.units import cm"""
 
 import parse
 
@@ -165,12 +165,33 @@ def generateTimetable(format, date, programId, year, branchId):
 
     if format == 'txt':
         fileName = generateTxt(startDate, endDate, data)
-    elif format == 'pdf':
-        fileName = generatePdf(startDate, endDate, data)
+    #elif format == 'pdf':
+    #    fileName = generatePdf(startDate, endDate, data)
     elif format == 'ical':
         fileName = generateIcal(startDate, endDate, data)
+    elif format == 'json':
+        return generateJson(startDate, endDate, data)
             
     return fileName
+
+def generateJson(startDate, endDate, data):
+    r_data = []
+
+    for key in data:
+            
+        if len(data[key]) > 0:
+            for lecture in data[key]:
+                r_data.append({
+                    'dan':  key,
+                    'predmet': lecture[0],
+                    'profesor': lecture[1],
+                    'prostor': lecture[2],
+                    'od': hours[lecture[3]],
+                    'do': hours[lecture[4]]
+                })
+
+    print r_data
+
 
 def generateTxt(startDate, endDate, data):
     fileName = 'timetable_%s-%s.txt' % (startDate, endDate)
@@ -187,7 +208,7 @@ def generateTxt(startDate, endDate, data):
                 
     return fileName
 
-def generatePdf(startDate, endDate, data):
+"""def generatePdf(startDate, endDate, data):
     fileName = 'timetable_%s-%s.pdf' % (startDate, endDate)
     
     vera = TTFont("Vera", "Vera.ttf")
@@ -239,7 +260,7 @@ def generatePdf(startDate, endDate, data):
     elements.append(table)
     doc.build(elements)
     
-    return fileName
+    return fileName"""
     
 def generateIcal(startDate, endDate, data):
     fileName = 'timetable_%s-%s.ics' % (startDate, endDate)
